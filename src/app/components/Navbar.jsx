@@ -1,8 +1,16 @@
 /* eslint-disable react/no-unescaped-entities */
 import Link from "next/link";
 // import { RegisterLink, LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
+import { RegisterLink, LoginLink } from "@kinde-oss/kinde-auth-nextjs/components";
 
-const Navbar = () => {
+import {LogoutLink} from "@kinde-oss/kinde-auth-nextjs/components";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
+
+const Navbar = async() => {
+    const { getUser } = getKindeServerSession();
+    const user = await getUser();
+
+    // console.log(user);
     return (
         <div className="navbar bg-base-100">
             <div className="navbar-start">
@@ -39,9 +47,11 @@ const Navbar = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                {/* <LoginLink>Sign in</LoginLink> */}
-                <button>Login</button>
-                {/* <RegisterLink>Sign up</RegisterLink> */}
+                {
+                    user ? <LogoutLink className="bg-black text-white px-3 py-2 rounded-md">Log out</LogoutLink> : <RegisterLink className="bg-black text-white px-3 py-2 rounded-md">Sign up</RegisterLink>
+                }
+
+                
             </div>
         </div>
     );
